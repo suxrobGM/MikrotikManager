@@ -1,0 +1,47 @@
+﻿<Window x:Class="MikrotikManager.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:local="clr-namespace:MikrotikManager"
+        xmlns:sf="http://schemas.syncfusion.com/wpf"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="Mikrotik Manager" 
+        Height="550" 
+        Width="650"
+        ResizeMode="CanMinimize" Background="#FFE0E0E0">
+    <Grid>
+        <sf:SfDataGrid Margin="10,123,9.2,9.8" ItemsSource="{Binding MkAddresses}" AutoGenerateColumns="False" AllowDeleting="True" AddNewRowPosition="Bottom" AllowFiltering="True" Background="White">
+            <sf:SfDataGrid.Columns>
+                <sf:GridTextColumn HeaderText="Name" MappingName="Name" AllowEditing="True"/>
+                <sf:GridTextColumn HeaderText="Address" MappingName="IPAddress" AllowEditing="True"/>
+                <sf:GridNumericColumn HeaderText="Timeout" MappingName="Timeout" AllowEditing="False"/>
+                <sf:GridDateTimeColumn HeaderText="Creation Time" MappingName="CreationTime" AllowEditing="False" />
+            </sf:SfDataGrid.Columns>
+        </sf:SfDataGrid>
+        <WrapPanel Margin="10,10,300.2,402.8">
+            <TextBlock Text="Connection Address:" FontWeight="Bold" Height="22" Width="125"/>
+            <TextBox TextWrapping="Wrap" Text="{Binding ConnectionAddress}" Width="168" Height="23"/>
+            <TextBlock Text="Username:" FontWeight="Bold" Height="22" Width="125"/>
+            <TextBox TextWrapping="Wrap" Text="{Binding Username}" Width="168" Height="23"/>
+            <TextBlock Text="Password:" FontWeight="Bold" Height="22" Width="125"/>
+            <PasswordBox x:Name="passwordBox" Width="168" Height="23">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PasswordChanged">
+                        <i:InvokeCommandAction Command="{Binding PasswordChangedCommand}" CommandParameter="{Binding ElementName=passwordBox}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </PasswordBox>
+            <CheckBox Content="Default Gateway" IsChecked="{Binding DefaultGateway}" Height="20" Width="218" Margin="0,6,0,0"/>
+
+            <Button Content="Connect" Height="23" Width="75" Margin="0,6,0,0" Command="{Binding ConnectCommand}"/>
+        </WrapPanel>
+        <TextBlock Margin="343,11,255.2,483.8" TextWrapping="Wrap" Text="Status" FontWeight="Bold"/>
+        <sf:SfBusyIndicator ViewboxHeight="20" ViewboxWidth="40" Margin="374,6,0,0" Content="" IsBusy="{Binding IsBusy}" Foreground="#FF17B01E"  VerticalAlignment="Top" HorizontalAlignment="Left" Width="40" Height="26" AnimationType="SingleCircle"/>
+        <TextBox Margin="343,37,9.2,402.8" TextWrapping="Wrap" Text="{Binding StatusMessages, Mode=OneWay}" IsReadOnly="True"/>
+
+    </Grid>
+</Window>
